@@ -1,0 +1,1598 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Buddy</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #F5EDD6;
+    --terracotta: #C8553D;
+    --deep: #1A1A2E;
+    --ocean: #2D6A8F;
+    --sage: #7B9E87;
+    --gold: #E8A838;
+    --cream: #FAF7F0;
+    --text: #2C2C2C;
+    --muted: #8A8070;
+    --card: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===================== SCREENS ===================== */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ===================== LANDING ===================== */
+  #screen-landing {
+    background: var(--deep);
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .landing-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(45,106,143,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(200,85,61,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 80%, rgba(232,168,56,0.2) 0%, transparent 40%);
+  }
+
+  .globe-art {
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: float 4s ease-in-out infinite;
+    display: block;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .landing-content { position: relative; z-index: 1; padding: 40px 30px; max-width: 480px; }
+
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--sand);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .brand-name span { color: var(--terracotta); }
+
+  .tagline {
+    font-size: 16px;
+    color: rgba(245,237,214,0.65);
+    margin: 16px 0 40px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .btn-primary {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+    letter-spacing: 0.3px;
+  }
+  .btn-primary:hover { background: #b84632; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,85,61,0.4); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--sand);
+    border: 1.5px solid rgba(245,237,214,0.3);
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--sand); background: rgba(245,237,214,0.08); }
+
+  .landing-btns { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+
+  .divider-text {
+    color: rgba(245,237,214,0.35);
+    font-size: 13px;
+    margin: 4px 0;
+  }
+
+  /* ===================== AUTH ===================== */
+  #screen-login, #screen-signup, #screen-onboard {
+    background: var(--cream);
+    padding: 0;
+  }
+
+  .auth-header {
+    background: var(--deep);
+    padding: 20px 24px 30px;
+    position: relative;
+  }
+
+  .back-btn {
+    background: none;
+    border: none;
+    color: rgba(245,237,214,0.6);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .auth-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--sand);
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .auth-subtitle {
+    color: rgba(245,237,214,0.55);
+    font-size: 14px;
+    margin-top: 8px;
+    font-weight: 300;
+  }
+
+  .auth-body { padding: 32px 24px; flex: 1; }
+
+  .form-group { margin-bottom: 20px; }
+
+  .form-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid #E0D8CC;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: white;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--ocean); }
+
+  .form-input::placeholder { color: #C4BAA8; }
+
+  .submit-btn {
+    width: 100%;
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .submit-btn:hover { background: #b84632; }
+
+  .auth-switch {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .auth-switch a { color: var(--terracotta); text-decoration: none; font-weight: 600; cursor: pointer; }
+
+  /* ===================== ONBOARDING ===================== */
+  .onboard-step { display: none; }
+  .onboard-step.active { display: block; }
+
+  .step-indicator {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .step-dot {
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(245,237,214,0.25);
+    flex: 1;
+    transition: background 0.3s;
+  }
+  .step-dot.done { background: var(--terracotta); }
+
+  .tag-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+  .tag-btn {
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: 1.5px solid #E0D8CC;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+  }
+  .tag-btn.selected {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+    color: white;
+  }
+
+  .section-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 20px 0 10px;
+  }
+
+  /* ===================== MAIN APP ===================== */
+  #screen-home, #screen-explore, #screen-messages, #screen-profile {
+    background: var(--cream);
+    padding-bottom: 80px;
+  }
+
+  /* Top Nav */
+  .top-nav {
+    background: white;
+    padding: 16px 20px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #F0EAE0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--deep);
+  }
+  .nav-brand span { color: var(--terracotta); }
+
+  .nav-icon-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px;
+    position: relative;
+  }
+
+  .notif-dot {
+    width: 8px; height: 8px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; right: 2px;
+    border: 1.5px solid white;
+  }
+
+  /* Bottom Nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    display: flex;
+    border-top: 1px solid #F0EAE0;
+    z-index: 200;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .nav-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s;
+    color: #B0A898;
+    gap: 3px;
+  }
+  .nav-tab.active { color: var(--terracotta); }
+
+  .nav-tab-icon { font-size: 22px; line-height: 1; }
+  .nav-tab-label { font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+
+  /* ===================== HOME FEED ===================== */
+  .stories-row {
+    padding: 16px 0 16px 16px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    background: white;
+    border-bottom: 1px solid #F0EAE0;
+  }
+  .stories-row::-webkit-scrollbar { display: none; }
+
+  .story-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 64px;
+    cursor: pointer;
+  }
+
+  .story-avatar {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: var(--sand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    border: 2.5px solid var(--terracotta);
+    padding: 2px;
+    transition: transform 0.2s;
+  }
+  .story-avatar:hover { transform: scale(1.05); }
+
+  .story-name { font-size: 11px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+
+  .add-story .story-avatar {
+    border-color: #E0D8CC;
+    background: #F5EDD6;
+    position: relative;
+    font-size: 28px;
+  }
+
+  /* Feed Post Card */
+  .feed-section { padding: 12px 0; }
+
+  .post-card {
+    background: white;
+    margin: 0 0 10px;
+    overflow: hidden;
+  }
+
+  .post-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px 10px;
+    gap: 12px;
+  }
+
+  .post-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--sand);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .post-user-info { flex: 1; }
+  .post-username { font-weight: 600; font-size: 14px; }
+  .post-meta { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  .post-more { background: none; border: none; font-size: 20px; color: var(--muted); cursor: pointer; }
+
+  .post-image {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    background: linear-gradient(135deg, #E8F4FD 0%, #F5EDD6 100%);
+  }
+
+  .post-body { padding: 14px 16px; }
+
+  .post-trip-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FEF3E2;
+    color: var(--gold);
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .post-caption { font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 12px; }
+  .post-caption strong { font-weight: 600; }
+
+  .post-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .post-tag {
+    background: #F0EAE0;
+    color: var(--muted);
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .post-actions {
+    display: flex;
+    gap: 16px;
+    padding: 0;
+    border-top: 1px solid #F5F0E8;
+    padding-top: 12px;
+  }
+
+  .post-action-btn {
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .post-action-btn:hover { color: var(--terracotta); }
+  .post-action-btn.liked { color: var(--terracotta); }
+  .post-action-btn .icon { font-size: 18px; }
+
+  /* Connect CTA */
+  .buddy-cta-card {
+    margin: 12px 16px;
+    background: linear-gradient(135deg, var(--deep) 0%, #2D3561 100%);
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .buddy-cta-card::before {
+    content: '✈️';
+    position: absolute;
+    right: 16px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 60px;
+    opacity: 0.15;
+  }
+  .buddy-cta-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .buddy-cta-text { font-size: 13px; opacity: 0.7; margin-bottom: 16px; line-height: 1.5; }
+  .buddy-cta-btn {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 11px 24px;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* ===================== EXPLORE ===================== */
+  .search-bar-wrap { padding: 14px 16px; background: white; border-bottom: 1px solid #F0EAE0; }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: #F5F0E8;
+    border-radius: 12px;
+    padding: 10px 14px;
+    gap: 10px;
+  }
+  .search-bar input {
+    flex: 1;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+  }
+  .search-bar input::placeholder { color: #B0A898; }
+
+  .filter-chips { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; }
+  .filter-chips::-webkit-scrollbar { display: none; }
+
+  .chip {
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: 1.5px solid #E0D8CC;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    color: var(--text);
+  }
+  .chip.active { background: var(--terracotta); border-color: var(--terracotta); color: white; }
+
+  .explore-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 20px 16px 12px;
+    color: var(--deep);
+  }
+
+  /* Buddy Cards */
+  .buddy-cards { display: flex; flex-direction: column; gap: 12px; padding: 0 16px; }
+
+  .buddy-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .buddy-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+
+  .buddy-card-header {
+    display: flex;
+    padding: 16px;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .buddy-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--sand);
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .buddy-info { flex: 1; }
+  .buddy-name { font-weight: 700; font-size: 16px; }
+  .buddy-location { font-size: 12px; color: var(--muted); margin: 2px 0 8px; }
+
+  .buddy-interest-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .buddy-tag {
+    background: #EEF6F0;
+    color: var(--sage);
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .match-badge {
+    background: linear-gradient(135deg, var(--terracotta), #E8703A);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    align-self: flex-start;
+    flex-shrink: 0;
+  }
+
+  .buddy-card-footer {
+    padding: 12px 16px 14px;
+    border-top: 1px solid #F5F0E8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .trip-plan-info { font-size: 13px; color: var(--muted); }
+  .trip-plan-info strong { color: var(--text); font-weight: 600; }
+
+  .connect-btn {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .connect-btn:hover { background: #b84632; }
+  .connect-btn.connected {
+    background: #EEF6F0;
+    color: var(--sage);
+  }
+
+  /* Destination Cards */
+  .dest-row { display: flex; gap: 12px; padding: 0 16px; overflow-x: auto; padding-bottom: 4px; }
+  .dest-row::-webkit-scrollbar { display: none; }
+
+  .dest-card {
+    min-width: 140px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    height: 180px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .dest-bg {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+  }
+
+  .dest-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    padding: 20px 12px 12px;
+    color: white;
+  }
+
+  .dest-name { font-weight: 700; font-size: 15px; }
+  .dest-count { font-size: 11px; opacity: 0.8; }
+
+  /* ===================== MESSAGES ===================== */
+  .messages-list { padding: 8px 0; }
+
+  .message-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .message-item:hover { background: #FAF7F0; }
+  .message-item.unread .msg-preview { color: var(--text); font-weight: 600; }
+
+  .msg-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--sand);
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .online-dot {
+    width: 12px; height: 12px;
+    background: #4CAF50;
+    border-radius: 50%;
+    border: 2px solid white;
+    position: absolute;
+    bottom: 1px; right: 1px;
+  }
+
+  .msg-body { flex: 1; min-width: 0; }
+  .msg-name { font-weight: 600; font-size: 15px; margin-bottom: 3px; }
+  .msg-preview { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .msg-time { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+  .unread-count {
+    background: var(--terracotta);
+    color: white;
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ===================== PROFILE ===================== */
+  .profile-hero {
+    background: var(--deep);
+    padding: 30px 20px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(200,85,61,0.25) 0%, transparent 60%);
+  }
+
+  .profile-info { position: relative; z-index: 1; text-align: center; padding-bottom: 0; }
+
+  .profile-avatar-big {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: var(--sand);
+    font-size: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    border: 3px solid rgba(245,237,214,0.3);
+  }
+
+  .profile-name-big {
+    font-family: 'Playfair Display', serif;
+    color: var(--sand);
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .profile-handle { color: rgba(245,237,214,0.5); font-size: 14px; margin-bottom: 14px; }
+
+  .profile-bio { color: rgba(245,237,214,0.7); font-size: 13px; line-height: 1.6; margin-bottom: 20px; max-width: 280px; margin-left: auto; margin-right: auto; }
+
+  .profile-stats {
+    display: flex;
+    border-top: 1px solid rgba(245,237,214,0.12);
+    position: relative; z-index: 1;
+  }
+
+  .stat-item {
+    flex: 1;
+    padding: 16px 8px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--sand);
+  }
+  .stat-label { font-size: 11px; color: rgba(245,237,214,0.45); margin-top: 2px; font-weight: 500; }
+
+  .profile-body { padding: 20px 16px; }
+
+  .profile-section-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .travel-style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+
+  .travel-style-card {
+    background: white;
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  }
+
+  .ts-icon { font-size: 24px; }
+  .ts-label { font-size: 13px; font-weight: 600; color: var(--text); }
+  .ts-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  .trip-history { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+  .trip-item {
+    background: white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  }
+
+  .trip-flag { font-size: 32px; }
+  .trip-info { flex: 1; }
+  .trip-name { font-weight: 600; font-size: 14px; }
+  .trip-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .trip-status {
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .trip-status.done { background: #EEF6F0; color: var(--sage); }
+  .trip-status.upcoming { background: #FEF3E2; color: var(--gold); }
+
+  .edit-profile-btn {
+    width: 100%;
+    background: white;
+    border: 1.5px solid var(--terracotta);
+    color: var(--terracotta);
+    padding: 14px;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+  }
+  .edit-profile-btn:hover { background: var(--terracotta); color: white; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--deep);
+    color: var(--sand);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ==================== LANDING ==================== -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-bg"></div>
+  <div class="landing-content">
+    <span class="globe-art">🌍</span>
+    <div class="brand-name">Travel<span>Buddy</span></div>
+    <p class="tagline">Find your perfect travel companion.<br>Explore the world with someone who gets you.</p>
+    <div class="landing-btns">
+      <button class="btn-primary" onclick="showScreen('screen-signup')">Get Started — It's Free</button>
+      <span class="divider-text">Already exploring?</span>
+      <button class="btn-secondary" onclick="showScreen('screen-login')">Sign In</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="screen-login" class="screen">
+  <div class="auth-header">
+    <button class="back-btn" onclick="showScreen('screen-landing')">←</button>
+    <div class="step-indicator">
+      <div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div>
+    </div>
+    <div class="auth-title">Welcome<br>back 👋</div>
+    <div class="auth-subtitle">Sign in to continue your journey</div>
+  </div>
+  <div class="auth-body">
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input type="email" class="form-input" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-input" placeholder="••••••••">
+    </div>
+    <button class="submit-btn" onclick="showScreen('screen-home')">Sign In →</button>
+    <div class="auth-switch">Don't have an account? <a onclick="showScreen('screen-signup')">Sign up</a></div>
+  </div>
+</div>
+
+<!-- ==================== SIGNUP ==================== -->
+<div id="screen-signup" class="screen">
+  <div class="auth-header">
+    <button class="back-btn" onclick="showScreen('screen-landing')">←</button>
+    <div class="step-indicator">
+      <div class="step-dot done"></div><div class="step-dot"></div><div class="step-dot"></div>
+    </div>
+    <div class="auth-title">Create your<br>account ✈️</div>
+    <div class="auth-subtitle">Start your travel community journey</div>
+  </div>
+  <div class="auth-body">
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input type="text" class="form-input" placeholder="Rahul Sharma">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input type="email" class="form-input" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-input" placeholder="Min. 8 characters">
+    </div>
+    <div class="form-group">
+      <label class="form-label">City / Location</label>
+      <input type="text" class="form-input" placeholder="Bengaluru, India">
+    </div>
+    <button class="submit-btn" onclick="showScreen('screen-onboard')">Continue →</button>
+    <div class="auth-switch">Already have an account? <a onclick="showScreen('screen-login')">Sign in</a></div>
+  </div>
+</div>
+
+<!-- ==================== ONBOARDING ==================== -->
+<div id="screen-onboard" class="screen">
+  <div class="auth-header">
+    <button class="back-btn" onclick="showScreen('screen-signup')">←</button>
+    <div id="onboard-step-dots" class="step-indicator">
+      <div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot"></div>
+    </div>
+    <div id="onboard-title" class="auth-title">Your travel<br>personality 🧭</div>
+    <div id="onboard-subtitle" class="auth-subtitle">Help buddies find you based on your vibe</div>
+  </div>
+  <div class="auth-body">
+
+    <!-- Step 1: Travel Interests -->
+    <div class="onboard-step active" id="onboard-s1">
+      <div class="section-label">I love to travel for...</div>
+      <div class="tag-grid">
+        <button class="tag-btn" onclick="toggleTag(this)">🏔️ Mountains</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🏖️ Beaches</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🏛️ History &amp; Culture</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🍜 Food &amp; Cuisine</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🌿 Nature &amp; Wildlife</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🎒 Backpacking</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🎭 Arts &amp; Festivals</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🧘 Wellness &amp; Yoga</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🚵 Adventure Sports</button>
+        <button class="tag-btn" onclick="toggleTag(this)">📸 Photography</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🏕️ Camping</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🌃 City Life</button>
+      </div>
+      <div class="section-label" style="margin-top:24px;">My travel style is...</div>
+      <div class="tag-grid">
+        <button class="tag-btn" onclick="toggleTag(this)">💰 Budget</button>
+        <button class="tag-btn" onclick="toggleTag(this)">✨ Luxury</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🎯 Planned</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🎲 Spontaneous</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🐢 Slow Travel</button>
+        <button class="tag-btn" onclick="toggleTag(this)">⚡ Packed Itinerary</button>
+      </div>
+      <button class="submit-btn" style="margin-top:28px;" onclick="goOnboardStep2()">Next →</button>
+    </div>
+
+    <!-- Step 2: Dream Destinations -->
+    <div class="onboard-step" id="onboard-s2">
+      <div class="section-label">Dream destinations</div>
+      <div class="tag-grid">
+        <button class="tag-btn" onclick="toggleTag(this)">🇯🇵 Japan</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇮🇹 Italy</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇳🇿 New Zealand</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇮🇳 Rajasthan</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇹🇭 Thailand</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇮🇸 Iceland</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇲🇦 Morocco</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇵🇪 Peru</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇳🇴 Norway</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇬🇷 Greece</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🇰🇪 Kenya</button>
+        <button class="tag-btn" onclick="toggleTag(this)">🌏 Southeast Asia</button>
+      </div>
+      <div class="section-label" style="margin-top:24px;">Next trip planned for...</div>
+      <div class="tag-grid">
+        <button class="tag-btn" onclick="toggleTag(this)">This Month</button>
+        <button class="tag-btn" onclick="toggleTag(this)">3–6 Months</button>
+        <button class="tag-btn" onclick="toggleTag(this)">6–12 Months</button>
+        <button class="tag-btn" onclick="toggleTag(this)">Just Exploring</button>
+      </div>
+      <button class="submit-btn" style="margin-top:28px;" onclick="showScreen('screen-home')">Start Exploring 🌍</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== HOME ==================== -->
+<div id="screen-home" class="screen">
+  <div class="top-nav">
+    <div class="nav-brand">Travel<span>Buddy</span></div>
+    <button class="nav-icon-btn" onclick="showScreen('screen-messages')">
+      💬
+      <div class="notif-dot"></div>
+    </button>
+  </div>
+
+  <!-- Stories -->
+  <div class="stories-row">
+    <div class="story-item">
+      <div class="add-story story-avatar">+</div>
+      <div class="story-name">Your Story</div>
+    </div>
+    <div class="story-item" onclick="showToast('Viewing Priya\'s story...')">
+      <div class="story-avatar">🧕</div>
+      <div class="story-name">Priya</div>
+    </div>
+    <div class="story-item" onclick="showToast('Viewing Arjun\'s story...')">
+      <div class="story-avatar">🧑‍🦱</div>
+      <div class="story-name">Arjun</div>
+    </div>
+    <div class="story-item" onclick="showToast('Viewing Sam\'s story...')">
+      <div class="story-avatar">👩‍🦰</div>
+      <div class="story-name">Sam</div>
+    </div>
+    <div class="story-item" onclick="showToast('Viewing Kiran\'s story...')">
+      <div class="story-avatar">🧑‍🦲</div>
+      <div class="story-name">Kiran</div>
+    </div>
+    <div class="story-item" onclick="showToast('Viewing Meera\'s story...')">
+      <div class="story-avatar">👩</div>
+      <div class="story-name">Meera</div>
+    </div>
+  </div>
+
+  <!-- Find Buddy CTA -->
+  <div class="buddy-cta-card">
+    <div class="buddy-cta-title">Ready to explore?</div>
+    <div class="buddy-cta-text">3 people nearby are planning a trip to Bali next month!</div>
+    <button class="buddy-cta-btn" onclick="showScreen('screen-explore')">Find a Buddy →</button>
+  </div>
+
+  <!-- Feed -->
+  <div class="feed-section">
+
+    <!-- Post 1 -->
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-avatar">🧕</div>
+        <div class="post-user-info">
+          <div class="post-username">Priya Mehta</div>
+          <div class="post-meta">📍 Manali, Himachal Pradesh · 2h ago</div>
+        </div>
+        <button class="post-more">⋯</button>
+      </div>
+      <div class="post-image">🏔️</div>
+      <div class="post-body">
+        <div class="post-trip-badge">✈️ Solo Trip · Manali</div>
+        <div class="post-caption">Finally made it to Rohtang Pass! The view from the top is absolutely breathtaking. <strong>Looking for someone to trek with me to Beas Kund tomorrow</strong> — anyone nearby?</div>
+        <div class="post-tags">
+          <span class="post-tag">#mountains</span>
+          <span class="post-tag">#trekking</span>
+          <span class="post-tag">#himachal</span>
+          <span class="post-tag">#lookingforbuddy</span>
+        </div>
+        <div class="post-actions">
+          <button class="post-action-btn" onclick="likePost(this)"><span class="icon">🤍</span>24 Likes</button>
+          <button class="post-action-btn"><span class="icon">💬</span>8 Comments</button>
+          <button class="post-action-btn" onclick="showToast('Connect request sent to Priya!')"><span class="icon">🤝</span>Connect</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post 2 -->
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-avatar">🧑‍🦱</div>
+        <div class="post-user-info">
+          <div class="post-username">Arjun Kapoor</div>
+          <div class="post-meta">📍 Goa · 5h ago</div>
+        </div>
+        <button class="post-more">⋯</button>
+      </div>
+      <div class="post-image">🌊</div>
+      <div class="post-body">
+        <div class="post-trip-badge">🏖️ Beach Trip · Goa</div>
+        <div class="post-caption">Spent the morning at Palolem beach. The sunsets here are unreal! Planning to road trip north to Hampi next week. <strong>Need 1–2 more travel buddies</strong> who love history + photography!</div>
+        <div class="post-tags">
+          <span class="post-tag">#goa</span>
+          <span class="post-tag">#roadtrip</span>
+          <span class="post-tag">#hampi</span>
+          <span class="post-tag">#photography</span>
+        </div>
+        <div class="post-actions">
+          <button class="post-action-btn" onclick="likePost(this)"><span class="icon">🤍</span>47 Likes</button>
+          <button class="post-action-btn"><span class="icon">💬</span>12 Comments</button>
+          <button class="post-action-btn" onclick="showToast('Connect request sent to Arjun!')"><span class="icon">🤝</span>Connect</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post 3 -->
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-avatar">👩‍🦰</div>
+        <div class="post-user-info">
+          <div class="post-username">Samantha Cruz</div>
+          <div class="post-meta">📍 Bengaluru · 1d ago</div>
+        </div>
+        <button class="post-more">⋯</button>
+      </div>
+      <div class="post-image">🌿</div>
+      <div class="post-body">
+        <div class="post-trip-badge">🌿 Nature Trip · Coorg</div>
+        <div class="post-caption">The coffee estates of Coorg are pure magic. We did a beautiful 3-day trip with 4 travel buddies I met right here on TravelBuddy. This app genuinely changed how I travel 💚</div>
+        <div class="post-tags">
+          <span class="post-tag">#coorg</span>
+          <span class="post-tag">#nature</span>
+          <span class="post-tag">#coffeetrail</span>
+        </div>
+        <div class="post-actions">
+          <button class="post-action-btn liked" onclick="likePost(this)"><span class="icon">❤️</span>89 Likes</button>
+          <button class="post-action-btn"><span class="icon">💬</span>31 Comments</button>
+          <button class="post-action-btn" onclick="showToast('Following Samantha!')"><span class="icon">➕</span>Follow</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-tab active" onclick="switchTab('screen-home', this)">
+      <span class="nav-tab-icon">🏠</span>
+      <span class="nav-tab-label">Home</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-explore', this)">
+      <span class="nav-tab-icon">🔍</span>
+      <span class="nav-tab-label">Explore</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-messages', this)">
+      <span class="nav-tab-icon">💬</span>
+      <span class="nav-tab-label">Messages</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-profile', this)">
+      <span class="nav-tab-icon">👤</span>
+      <span class="nav-tab-label">Profile</span>
+    </button>
+  </div>
+</div>
+
+<!-- ==================== EXPLORE ==================== -->
+<div id="screen-explore" class="screen">
+  <div class="top-nav">
+    <div class="nav-brand">Explore</div>
+  </div>
+
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" placeholder="Search destinations, buddies...">
+    </div>
+  </div>
+
+  <div class="filter-chips">
+    <button class="chip active" onclick="filterChip(this)">All</button>
+    <button class="chip" onclick="filterChip(this)">Near Me</button>
+    <button class="chip" onclick="filterChip(this)">Same Destination</button>
+    <button class="chip" onclick="filterChip(this)">Same Travel Style</button>
+    <button class="chip" onclick="filterChip(this)">Verified</button>
+  </div>
+
+  <div class="explore-section-title">🔥 Trending Destinations</div>
+  <div class="dest-row">
+    <div class="dest-card" onclick="showToast('Exploring Bali...')">
+      <div class="dest-bg" style="background:linear-gradient(135deg,#E8F4FD,#C8E6C9)">🌴</div>
+      <div class="dest-overlay">
+        <div class="dest-name">Bali</div>
+        <div class="dest-count">142 buddies planning</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="showToast('Exploring Manali...')">
+      <div class="dest-bg" style="background:linear-gradient(135deg,#E3F2FD,#E8EAF6)">🏔️</div>
+      <div class="dest-overlay">
+        <div class="dest-name">Manali</div>
+        <div class="dest-count">98 buddies planning</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="showToast('Exploring Kyoto...')">
+      <div class="dest-bg" style="background:linear-gradient(135deg,#FCE4EC,#F3E5F5)">🏯</div>
+      <div class="dest-overlay">
+        <div class="dest-name">Kyoto</div>
+        <div class="dest-count">76 buddies planning</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="showToast('Exploring Iceland...')">
+      <div class="dest-bg" style="background:linear-gradient(135deg,#E0F7FA,#E8F5E9)">🌌</div>
+      <div class="dest-overlay">
+        <div class="dest-name">Iceland</div>
+        <div class="dest-count">54 buddies planning</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="explore-section-title">✨ Buddy Suggestions For You</div>
+  <div class="buddy-cards">
+
+    <div class="buddy-card">
+      <div class="buddy-card-header">
+        <div class="buddy-avatar">🧕</div>
+        <div class="buddy-info">
+          <div class="buddy-name">Priya Mehta</div>
+          <div class="buddy-location">📍 Mumbai · 42 trips completed</div>
+          <div class="buddy-interest-tags">
+            <span class="buddy-tag">🏔️ Mountains</span>
+            <span class="buddy-tag">📸 Photography</span>
+            <span class="buddy-tag">🌿 Nature</span>
+          </div>
+        </div>
+        <div class="match-badge">94% Match</div>
+      </div>
+      <div class="buddy-card-footer">
+        <div class="trip-plan-info">Planning: <strong>Bali · April 2026</strong></div>
+        <button class="connect-btn" onclick="connectBuddy(this)">Connect</button>
+      </div>
+    </div>
+
+    <div class="buddy-card">
+      <div class="buddy-card-header">
+        <div class="buddy-avatar">🧑‍🦱</div>
+        <div class="buddy-info">
+          <div class="buddy-name">Arjun Kapoor</div>
+          <div class="buddy-location">📍 Bengaluru · 18 trips completed</div>
+          <div class="buddy-interest-tags">
+            <span class="buddy-tag">🏛️ Culture</span>
+            <span class="buddy-tag">🍜 Food</span>
+            <span class="buddy-tag">🎒 Backpacking</span>
+          </div>
+        </div>
+        <div class="match-badge">89% Match</div>
+      </div>
+      <div class="buddy-card-footer">
+        <div class="trip-plan-info">Planning: <strong>Japan · June 2026</strong></div>
+        <button class="connect-btn" onclick="connectBuddy(this)">Connect</button>
+      </div>
+    </div>
+
+    <div class="buddy-card">
+      <div class="buddy-card-header">
+        <div class="buddy-avatar">👩</div>
+        <div class="buddy-info">
+          <div class="buddy-name">Meera Nair</div>
+          <div class="buddy-location">📍 Kochi · 31 trips completed</div>
+          <div class="buddy-interest-tags">
+            <span class="buddy-tag">🧘 Wellness</span>
+            <span class="buddy-tag">🌊 Beaches</span>
+            <span class="buddy-tag">🎭 Festivals</span>
+          </div>
+        </div>
+        <div class="match-badge">85% Match</div>
+      </div>
+      <div class="buddy-card-footer">
+        <div class="trip-plan-info">Planning: <strong>Sri Lanka · May 2026</strong></div>
+        <button class="connect-btn" onclick="connectBuddy(this)">Connect</button>
+      </div>
+    </div>
+
+    <div class="buddy-card">
+      <div class="buddy-card-header">
+        <div class="buddy-avatar">🧑‍🦲</div>
+        <div class="buddy-info">
+          <div class="buddy-name">Kiran Reddy</div>
+          <div class="buddy-location">📍 Hyderabad · 27 trips completed</div>
+          <div class="buddy-interest-tags">
+            <span class="buddy-tag">🚵 Adventure</span>
+            <span class="buddy-tag">🏕️ Camping</span>
+            <span class="buddy-tag">🏔️ Mountains</span>
+          </div>
+        </div>
+        <div class="match-badge">81% Match</div>
+      </div>
+      <div class="buddy-card-footer">
+        <div class="trip-plan-info">Planning: <strong>Ladakh · Aug 2026</strong></div>
+        <button class="connect-btn" onclick="connectBuddy(this)">Connect</button>
+      </div>
+    </div>
+
+  </div>
+  <div style="height:20px;"></div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-tab" onclick="switchTab('screen-home', this)">
+      <span class="nav-tab-icon">🏠</span><span class="nav-tab-label">Home</span>
+    </button>
+    <button class="nav-tab active" onclick="switchTab('screen-explore', this)">
+      <span class="nav-tab-icon">🔍</span><span class="nav-tab-label">Explore</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-messages', this)">
+      <span class="nav-tab-icon">💬</span><span class="nav-tab-label">Messages</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-profile', this)">
+      <span class="nav-tab-icon">👤</span><span class="nav-tab-label">Profile</span>
+    </button>
+  </div>
+</div>
+
+<!-- ==================== MESSAGES ==================== -->
+<div id="screen-messages" class="screen">
+  <div class="top-nav">
+    <div class="nav-brand">Messages</div>
+    <button class="nav-icon-btn" onclick="showToast('New message!')">✏️</button>
+  </div>
+
+  <div class="messages-list">
+    <div class="message-item unread" onclick="showToast('Opening chat with Priya...')">
+      <div class="msg-avatar">🧕<div class="online-dot"></div></div>
+      <div class="msg-body">
+        <div class="msg-name">Priya Mehta</div>
+        <div class="msg-preview">Hey! Are you free for the Bali trip in April? 🌴</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div class="msg-time">2m ago</div>
+        <div class="unread-count">2</div>
+      </div>
+    </div>
+
+    <div class="message-item unread" onclick="showToast('Opening chat with Arjun...')">
+      <div class="msg-avatar">🧑‍🦱</div>
+      <div class="msg-body">
+        <div class="msg-name">Arjun Kapoor</div>
+        <div class="msg-preview">Hampi road trip group — 3 people confirmed so far!</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div class="msg-time">1h ago</div>
+        <div class="unread-count">5</div>
+      </div>
+    </div>
+
+    <div class="message-item" onclick="showToast('Opening chat with Meera...')">
+      <div class="msg-avatar">👩<div class="online-dot"></div></div>
+      <div class="msg-body">
+        <div class="msg-name">Meera Nair</div>
+        <div class="msg-preview">The itinerary for Sri Lanka looks perfect! 😍</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div class="msg-time">Yesterday</div>
+      </div>
+    </div>
+
+    <div class="message-item" onclick="showToast('Opening chat with Kiran...')">
+      <div class="msg-avatar">🧑‍🦲</div>
+      <div class="msg-body">
+        <div class="msg-name">Kiran Reddy</div>
+        <div class="msg-preview">Ladakh in August will be so epic. Are you in?</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div class="msg-time">2d ago</div>
+      </div>
+    </div>
+
+    <div class="message-item" onclick="showToast('Opening group chat...')">
+      <div class="msg-avatar" style="background:#FEF3E2;font-size:22px;">🌍</div>
+      <div class="msg-body">
+        <div class="msg-name">Japan 2026 Group 🇯🇵</div>
+        <div class="msg-preview">Arjun: I found an amazing ryokan in Kyoto!</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div class="msg-time">3d ago</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-tab" onclick="switchTab('screen-home', this)">
+      <span class="nav-tab-icon">🏠</span><span class="nav-tab-label">Home</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-explore', this)">
+      <span class="nav-tab-icon">🔍</span><span class="nav-tab-label">Explore</span>
+    </button>
+    <button class="nav-tab active" onclick="switchTab('screen-messages', this)">
+      <span class="nav-tab-icon">💬</span><span class="nav-tab-label">Messages</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-profile', this)">
+      <span class="nav-tab-icon">👤</span><span class="nav-tab-label">Profile</span>
+    </button>
+  </div>
+</div>
+
+<!-- ==================== PROFILE ==================== -->
+<div id="screen-profile" class="screen">
+  <div class="top-nav" style="background:var(--deep);border-bottom:none;">
+    <div class="nav-brand" style="color:var(--sand);">Travel<span style="color:var(--terracotta);">Buddy</span></div>
+    <button class="nav-icon-btn" onclick="showToast('Settings')">⚙️</button>
+  </div>
+
+  <div class="profile-hero">
+    <div class="profile-info">
+      <div class="profile-avatar-big">😊</div>
+      <div class="profile-name-big">Rahul Sharma</div>
+      <div class="profile-handle">@rahul.explorer</div>
+      <div class="profile-bio">Adventure seeker from Bengaluru 🇮🇳 · Mountains + Beaches + Street food lover · Always planning the next trip!</div>
+    </div>
+    <div class="profile-stats">
+      <div class="stat-item" onclick="showToast('Viewing trips...')">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Trips</div>
+      </div>
+      <div class="stat-item" onclick="showToast('Viewing buddies...')">
+        <div class="stat-num">84</div>
+        <div class="stat-label">Buddies</div>
+      </div>
+      <div class="stat-item" onclick="showToast('Viewing followers...')">
+        <div class="stat-num">236</div>
+        <div class="stat-label">Followers</div>
+      </div>
+      <div class="stat-item" onclick="showToast('Viewing countries...')">
+        <div class="stat-num">9</div>
+        <div class="stat-label">Countries</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <button class="edit-profile-btn">✏️ Edit Profile</button>
+
+    <div class="profile-section-title">🎯 My Travel Style</div>
+    <div class="travel-style-grid">
+      <div class="travel-style-card">
+        <span class="ts-icon">🏔️</span>
+        <div><div class="ts-label">Mountains</div><div class="ts-sub">Top interest</div></div>
+      </div>
+      <div class="travel-style-card">
+        <span class="ts-icon">📸</span>
+        <div><div class="ts-label">Photography</div><div class="ts-sub">Hobby</div></div>
+      </div>
+      <div class="travel-style-card">
+        <span class="ts-icon">🍜</span>
+        <div><div class="ts-label">Food Travel</div><div class="ts-sub">Passion</div></div>
+      </div>
+      <div class="travel-style-card">
+        <span class="ts-icon">🎒</span>
+        <div><div class="ts-label">Backpacking</div><div class="ts-sub">Travel style</div></div>
+      </div>
+    </div>
+
+    <div class="profile-section-title">🗺️ Trip History</div>
+    <div class="trip-history">
+      <div class="trip-item">
+        <div class="trip-flag">🇹🇭</div>
+        <div class="trip-info">
+          <div class="trip-name">Bangkok &amp; Chiang Mai</div>
+          <div class="trip-date">Jan 2026 · 10 days</div>
+        </div>
+        <div class="trip-status done">Done</div>
+      </div>
+      <div class="trip-item">
+        <div class="trip-flag">🌴</div>
+        <div class="trip-info">
+          <div class="trip-name">Bali, Indonesia</div>
+          <div class="trip-date">April 2026 · 14 days</div>
+        </div>
+        <div class="trip-status upcoming">Upcoming</div>
+      </div>
+      <div class="trip-item">
+        <div class="trip-flag">🇮🇳</div>
+        <div class="trip-info">
+          <div class="trip-name">Spiti Valley Circuit</div>
+          <div class="trip-date">Sept 2025 · 8 days</div>
+        </div>
+        <div class="trip-status done">Done</div>
+      </div>
+      <div class="trip-item">
+        <div class="trip-flag">🇯🇵</div>
+        <div class="trip-info">
+          <div class="trip-name">Japan — Cherry Blossoms</div>
+          <div class="trip-date">June 2026 · Planned</div>
+        </div>
+        <div class="trip-status upcoming">Upcoming</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-tab" onclick="switchTab('screen-home', this)">
+      <span class="nav-tab-icon">🏠</span><span class="nav-tab-label">Home</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-explore', this)">
+      <span class="nav-tab-icon">🔍</span><span class="nav-tab-label">Explore</span>
+    </button>
+    <button class="nav-tab" onclick="switchTab('screen-messages', this)">
+      <span class="nav-tab-icon">💬</span><span class="nav-tab-label">Messages</span>
+    </button>
+    <button class="nav-tab active" onclick="switchTab('screen-profile', this)">
+      <span class="nav-tab-icon">👤</span><span class="nav-tab-label">Profile</span>
+    </button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function switchTab(screenId, btn) {
+    showScreen(screenId);
+    // Update all bottom navs
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.bottom-nav').forEach(nav => {
+      const tabs = nav.querySelectorAll('.nav-tab');
+      tabs.forEach(t => {
+        if (t.getAttribute('onclick') && t.getAttribute('onclick').includes(screenId)) {
+          t.classList.add('active');
+        }
+      });
+    });
+  }
+
+  function toggleTag(btn) {
+    btn.classList.toggle('selected');
+  }
+
+  function goOnboardStep2() {
+    document.getElementById('onboard-s1').classList.remove('active');
+    document.getElementById('onboard-s2').classList.add('active');
+    document.getElementById('onboard-title').textContent = 'Where do you\nwant to go? 🗺️';
+    document.getElementById('onboard-subtitle').textContent = 'Pick dream destinations & travel timeline';
+    const dots = document.querySelectorAll('#onboard-step-dots .step-dot');
+    dots[2].classList.add('done');
+  }
+
+  function likePost(btn) {
+    if (btn.classList.contains('liked')) {
+      btn.classList.remove('liked');
+      btn.innerHTML = '<span class="icon">🤍</span>' + btn.innerHTML.replace(/❤️|🤍/, '').trim();
+    } else {
+      btn.classList.add('liked');
+      btn.innerHTML = '<span class="icon">❤️</span>' + btn.innerHTML.replace(/❤️|🤍/, '').trim();
+    }
+  }
+
+  function connectBuddy(btn) {
+    if (btn.classList.contains('connected')) return;
+    btn.classList.add('connected');
+    btn.textContent = '✓ Connected';
+    showToast('Connection request sent! 🤝');
+  }
+
+  function filterChip(el) {
+    document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  let toastTimeout;
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+</script>
+
+
+</body></html>
